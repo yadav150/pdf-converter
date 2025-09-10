@@ -1,8 +1,11 @@
-document.getElementById("convertBtn").addEventListener("click", async () => {
-  const fileInput = document.getElementById("pdfFile");
-  const file = fileInput.files[0];
-  const resultDiv = document.getElementById("result");
+const convertBtn = document.getElementById("convertBtn");
+const fileInput = document.getElementById("pdfFile");
+const resultDiv = document.getElementById("result");
 
+convertBtn.addEventListener("click", handleConvert);
+
+async function handleConvert() {
+  const file = fileInput.files[0];
   if (!file) {
     resultDiv.textContent = "Please upload a PDF first.";
     return;
@@ -47,10 +50,26 @@ document.getElementById("convertBtn").addEventListener("click", async () => {
         link.className = "download-link";
         resultDiv.appendChild(link);
       }
+
+      // 🔄 Change button to Reset
+      convertBtn.textContent = "Reset";
+      convertBtn.classList.add("reset");
+      convertBtn.removeEventListener("click", handleConvert);
+      convertBtn.addEventListener("click", handleReset);
+
     } catch (err) {
       resultDiv.textContent = "Error processing PDF: " + err.message;
     }
   };
 
   reader.readAsArrayBuffer(file);
-});
+}
+
+function handleReset() {
+  fileInput.value = "";
+  resultDiv.textContent = "Upload a PDF and click Convert.";
+  convertBtn.textContent = "Convert to JPEG";
+  convertBtn.classList.remove("reset");
+  convertBtn.removeEventListener("click", handleReset);
+  convertBtn.addEventListener("click", handleConvert);
+}
