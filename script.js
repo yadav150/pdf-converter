@@ -29,7 +29,7 @@ document.getElementById("convertBtn").addEventListener("click", async () => {
 
         await page.render({ canvasContext: context, viewport }).promise;
 
-        // Convert canvas to JPEG image
+        // Convert to JPEG
         const imgURL = canvas.toDataURL("image/jpeg", 1.0);
 
         // Show preview
